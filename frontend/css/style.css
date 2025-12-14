@@ -1,10 +1,7 @@
 body {
-  background-color: #f4f6f8;
+  background-color: #f5f7fa;
 }
 
-h4 {
-  font-weight: 600;
-}
 .card-title {
   font-weight: 600;
 }
@@ -14,6 +11,6 @@ h4 {
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }

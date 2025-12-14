@@ -1,46 +1,55 @@
+const planList = document.getElementById("planList");
+
 async function loadPlans() {
-    try {
-        const res = await fetch(`${BASE_URL}/plans`);
-        const plans = await res.json();
+  try {
+    const response = await fetch(`${BASE_URL}/plans`);
+    const plans = await response.json();
 
-        const container = document.getElementById("planList");
-        container.innerHTML = "";
+    planList.innerHTML = "";
 
-        if (plans.length === 0) {
-            container.innerHTML = `
-        <p class="text-muted">No plans available yet.</p>
+    if (!plans || plans.length === 0) {
+      planList.innerHTML = `
+        <p class="text-muted">No plans available at the moment.</p>
       `;
-            return;
-        }
+      return;
+    }
 
-        plans.forEach(plan => {
-            const card = document.createElement("div");
-            card.className = "col-sm-6 col-md-4";
+    plans.forEach(plan => {
+      const col = document.createElement("div");
+      col.className = "col-sm-6 col-md-4";
 
-            card.innerHTML = `
+      col.innerHTML = `
         <div class="card h-100 shadow-sm border-0">
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title">${plan.title}</h5>
+            <h5 class="card-title fw-semibold">
+              ${plan.title}
+            </h5>
 
             <p class="text-muted mb-1">
               Trainer: <strong>${plan.trainer}</strong>
             </p>
 
-            <p class="fw-bold mt-2">₹${plan.price}</p>
+            <p class="fw-bold fs-5 mt-2">₹${plan.price}</p>
 
-            <a href="plan.html?id=${plan.id}" 
-            class="btn btn-outline-primary mt-auto w-100">
+            <a
+              href="plan.html?id=${plan.id}"
+              class="btn btn-outline-primary mt-auto w-100"
+            >
               View Details
             </a>
           </div>
         </div>
       `;
-            container.appendChild(card);
-        });
 
-    } catch (err) {
-        console.error(err);
-    }
+      planList.appendChild(col);
+    });
+
+  } catch (error) {
+    console.error(error);
+    planList.innerHTML = `
+      <p class="text-danger">Failed to load plans.</p>
+    `;
+  }
 }
 
 loadPlans();

@@ -1,10 +1,10 @@
-const feedList = document.getElementById("feedList");
+const feedContainer = document.getElementById("feedContainer");
 const logoutBtn = document.getElementById("logoutBtn");
 
-logoutBtn.addEventListener("click", () => {
+logoutBtn.onclick = () => {
   clearToken();
-  window.location.href = "login.html";
-});
+  window.location.href = "index.html";
+};
 
 async function loadFeed() {
   try {
@@ -13,51 +13,39 @@ async function loadFeed() {
     });
 
     const feed = await res.json();
-    feedList.innerHTML = "";
+    feedContainer.innerHTML = "";
 
-    if (!feed.length) {
-      feedList.innerHTML = `
-        <p class="text-muted">
-          You are not following any trainers yet.
-        </p>
-      `;
+    if (feed.length === 0) {
+      feedContainer.innerHTML = `<p class="text-muted">Follow trainers to see plans.</p>`;
       return;
     }
 
-    feed.forEach(plan => {
+    feed.forEach(item => {
       const col = document.createElement("div");
       col.className = "col-md-4";
 
       col.innerHTML = `
-        <div class="card h-100 shadow-sm border-0">
+        <div class="card shadow-sm h-100">
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title">${plan.title}</h5>
+            <h5>${item.title}</h5>
+            <p class="text-muted">Trainer: ${item.trainer}</p>
+            <p class="fw-bold">₹${item.price}</p>
 
-            <p class="text-muted mb-1">
-              Trainer: <strong>${plan.trainer}</strong>
-            </p>
+            <span class="badge ${item.purchased ? "bg-success" : "bg-warning text-dark"} mb-2">
+              ${item.purchased ? "Purchased" : "Not Purchased"}
+            </span>
 
-            <p class="fw-bold">₹${plan.price}</p>
-
-            ${plan.purchased
-          ? `<span class="badge bg-success mb-2">Purchased</span>`
-          : `<span class="badge bg-warning text-dark mb-2">Not Purchased</span>`
-        }
-
-            <a href="plan.html?id=${plan.id}"
-               class="btn btn-outline-primary mt-auto w-100">
+            <a href="plan.html?id=${item.id}" class="btn btn-outline-primary mt-auto">
               View Plan
             </a>
           </div>
         </div>
       `;
 
-      feedList.appendChild(col);
+      feedContainer.appendChild(col);
     });
-  } catch (err) {
-    feedList.innerHTML = `
-      <p class="text-danger">Failed to load feed</p>
-    `;
+  } catch {
+    feedContainer.innerHTML = `<p class="text-danger">Failed to load feed</p>`;
   }
 }
 

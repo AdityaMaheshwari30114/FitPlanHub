@@ -47,7 +47,6 @@ The project emphasizes backend logic, secure authentication, database relationsh
 **Frontend**
 - HTML
 - CSS
-- Bootstrap 5
 
 **Tools**
 - MongoDB Compass
